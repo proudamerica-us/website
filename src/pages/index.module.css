@@ -1,0 +1,41 @@
+/* stylelint-disable docusaurus/copyright-header */
+
+/**
+ * CSS files with the .module.css suffix will be treated as CSS modules
+ * and scoped locally.
+ */
+
+.heroBanner {
+  padding: 4rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background-color: #b31942;
+}
+
+@media screen and (max-width: 966px) {
+  .heroBanner {
+    padding: 2rem;
+  }
+}
+
+.main {
+  padding: 2rem 3em;
+}
+
+.blogSection {
+  padding: 2rem 0;
+}
+
+.blogRow {
+  margin-top: 1rem;
+}
+
+/* Remove .blogCard styles as they are now in BlogCard.module.css */
+/* Add styling for the RealTimeClock component */
+.clockWrapper {
+  margin: 1rem 0;
+  text-align: center;
+  color: #fff;
+  font-size: 1rem;
+}

@@ -1,0 +1,40 @@
+{
+  "include": [
+    "src/**/*",
+    "docusaurus.config.ts",
+    "sidebars.ts",
+    "types/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "build",
+    ".docusaurus"
+  ],
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "allowJs": true,
+    "checkJs": false,
+    "baseUrl": ".",
+    "paths": {
+      "@docusaurus/*": ["types/@docusaurus/*"],
+      "@site/*": ["types/@site/*"],
+      "@theme/*": ["types/@theme/*"]
+    },
+    "resolveJsonModule": true,
+    "typeRoots": [
+      "./node_modules/@types",
+      "./types"
+    ],
+    "lib": [
+      "DOM",
+      "ESNext"
+    ]
+  }
+}

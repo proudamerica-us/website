@@ -1,0 +1,73 @@
+import React from 'react';
+import clsx from 'clsx';
+import Layout from '@theme/Layout';
+import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import styles from './index.module.css';
+import HomepageContent from './__index.md';
+import { useBlogPosts } from '@docusaurus/plugin-content-blog/client';
+import HomepageHeader from '../components/HomepageHeader';
+import BlogCard from '../components/BlogCard';
+import useIsBrowser from '@docusaurus/useIsBrowser';
+
+export default function Home() {
+  const { siteConfig } = useDocusaurusContext();
+  const blogPosts = useBlogPosts(); // Fetch blog posts with metadata
+  const recentPosts = blogPosts?.length > 0 ? blogPosts.slice(0, 12) : [];
+  const isBrowser = useIsBrowser();
+
+  // Log posts for debugging
+  console.log('Recent Posts:', recentPosts);
+
+  // Map posts to include image with fallback
+  const postsWithImages = recentPosts.map(post => {
+    const frontMatter = post.metadata.frontMatter || {};
+    const image = frontMatter.image || '/img/proudamerica.webp';
+    console.log(`Post: ${post.metadata.title}, frontMatter:`, frontMatter, 'Image:', image);
+    return {
+      title: post.metadata.title,
+      permalink: post.metadata.permalink,
+      date: post.metadata.date,
+      frontMatter: {
+        ...frontMatter,
+        image,
+      },
+    };
+  });
+
+  return (
+    <Layout description={siteConfig.tagline}>
+      <HomepageHeader />
+      <main className={styles.main}>
+        <HomepageContent />
+        <section className={styles.blogSection}>
+          <div className="container">
+            <h2>Latest Articles & Analysis</h2>
+            {postsWithImages.length > 0 ? (
+              <div className={clsx('row', styles.blogRow)}>
+                {postsWithImages.map((post, index) => (
+                  <div key={index} className="col col--4">
+                    <BlogCard
+                      post={{
+                        title: post.title,
+                        permalink: post.permalink,
+                        date: post.date,
+                        frontMatter: {
+                          image: post.frontMatter.image,
+                        },
+                      }}
+                    />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No blog posts available.</p>
+            )}
+          </div>
+        </section>
+      </main>
+      {isBrowser && (
+        <div id="navbar-realtime-clock" className={styles.clockWrapper}></div>
+      )}
+    </Layout>
+  );
+}

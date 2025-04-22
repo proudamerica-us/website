@@ -1,0 +1,307 @@
+/* stylelint-disable docusaurus/copyright-header */
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* Import Instrument Serif and Instrument Sans from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+
+/* You can override the default Infima variables here. */
+:root {
+  --ifm-color-primary: #b31942;
+  --ifm-color-primary-dark: #e68700;
+  --ifm-color-primary-darker: #d98000;
+  --ifm-color-primary-darkest: #b36900;
+  --ifm-color-primary-light: #ffa11a;
+  --ifm-color-primary-lighter: #ffa626;
+  --ifm-color-primary-lightest: #ffb64d;
+  --ifm-code-font-size: 95%;
+  --ifm-font-family-base: 'Instrument Sans', sans-serif;
+  --ifm-heading-font-family: 'Instrument Serif', serif;
+  --ifm-font-size-base: 18px;
+  --ifm-heading-font-size-multiplier: 1.2;
+  --ifm-word-spacing: 0.05em;
+  --ifm-letter-spacing: 0.02em;
+}
+
+.docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.1);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
+
+.hero__title, .title_f1Hy {
+  font-size: 3.5rem;
+  color: #0a3161;
+  font-family: 'Instrument Serif', serif;
+  word-spacing: 0.06em;
+  letter-spacing: 0.03em;
+}
+
+.hero__subtitle {
+  font-size: 1.8rem;
+  color: beige;
+  font-family: 'Instrument Sans', sans-serif;
+  word-spacing: 0.05em;
+  letter-spacing: 0.02em;
+}
+
+html[data-theme='dark'] .docusaurus-highlight-code-line {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+/* Updated dark mode colors for hero and title */
+html[data-theme='dark'] .title_f1Hy,
+html[data-theme='dark'] .hero__subtitle,
+html[data-theme='dark'] .hero__title {
+  color: #b2b2b2;
+  font-family: 'Instrument Serif', serif;
+  word-spacing: 0.06em;
+  letter-spacing: 0.03em;
+}
+
+html[data-theme='dark'] .hero__subtitle {
+  font-family: 'Instrument Sans', sans-serif;
+  word-spacing: 0.05em;
+  letter-spacing: 0.02em;
+}
+
+/* Highlight for marked text in hero section (dark mode only) */
+html[data-theme='dark'] .hero mark {
+  background-color: #444444;
+  color: #dae9fd;
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+}
+
+/* PROUDAMERICA CSS */
+
+.navbar--fixed-top {
+  position: sticky;
+  top: 0;
+  z-index: var(--ifm-z-index-fixed);
+  background-color: #0A3161;
+}
+
+.announcementBarContent_xLdY, .navbar__title {
+  flex: 1 1 auto;
+  color: #dae9fd;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1.7rem;
+  word-spacing: 0.05em;
+  letter-spacing: 0.02em;
+}
+
+.navbar__brand, .navbar__link {
+  color: #7ea0ca;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1.4rem;
+  word-spacing: 0.05em;
+  letter-spacing: 0.02em;
+}
+
+.navbar__link--active, .navbar__link:hover {
+  color: #dae9fd;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+  color: #6a4207;
+  font-family: 'Instrument Sans', sans-serif;
+  word-spacing: var(--ifm-word-spacing);
+  letter-spacing: var(--ifm-letter-spacing);
+}
+
+.hero--primary {
+  --ifm-hero-background-color: #b31942;
+  --ifm-hero-text-color: var(--ifm-font-color-base-inverse);
+}
+
+/* CONTENT BG DARK WHITE
+main {
+  padding: 2rem 3em;
+  background-color: beige;
+}
+
+html[data-theme='dark'] .main {
+  color: red;
+  background-color: black;
+} */
+
+.footer--dark {
+  --ifm-footer-background-color: #b31942;
+  --ifm-footer-color: var(--ifm-footer-link-color);
+  --ifm-footer-link-color: var(--ifm-color-secondary);
+  --ifm-footer-title-color: var(--ifm-color-white);
+}
+
+.mainWrapper_z2l0 {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  background-color: #f2e2b3;
+}
+
+html[data-theme='dark'] .mainWrapper_z2l0 {
+  background-color: #0a3161;
+}
+
+.footer__copyright {
+  color: beige;
+}
+
+a {
+  color: #b31942;
+  text-decoration: var(--ifm-link-decoration);
+}
+
+a:hover {
+  color: #0A3161;
+  text-decoration: var(--ifm-link-hover-decoration);
+}
+
+/* Updated hover styles for dark mode */
+html[data-theme='dark'] .footer__link-item:hover,
+html[data-theme='dark'] a:hover {
+  color: #929292;
+}
+
+/* DARK MODE PROUDAMERICAUS */
+
+[data-theme='dark'] {
+  --ifm-color-primary: #b31942;
+  --ifm-color-primary-dark: #e68700;
+  --ifm-color-primary-darker: #d98000;
+  --ifm-color-primary-darkest: #b36900;
+  --ifm-color-primary-light: #ffa11a;
+  --ifm-color-primary-lighter: #ffa626;
+  --ifm-color-primary-lightest: #ffb64d;
+  --ifm-code-font-size: 95%;
+}
+
+.announcementBarContent_xLdY, .navbar__title {
+  color: #dae9fd;
+  flex: 1 1 auto;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 1.7rem;
+  word-spacing: 0.05em;
+  letter-spacing: 0.02em;
+}
+
+/* Card background to match front page */
+.card {
+  background-color: #f2e2b3;
+}
+
+/* Ensure header and image sections match */
+.card__header,
+.card__image {
+  background-color: #f5f5dc;
+}
+
+/* Preserve dark mode card background */
+html[data-theme='dark'] .card {
+  background-color: #2b2b2b;
+}
+
+html[data-theme='dark'] .card__header,
+html[data-theme='dark'] .card__image {
+  background-color: #2b2b2b;
+}
+
+/* Custom CSS for Logo and Navbar */
+.navbar {
+  height: 60px;
+  padding: 10px 20px;
+  align-items: center;
+}
+
+/* Style the logo */
+.navbar__logo img {
+  width: 87px;
+  height: 87px;
+  border-radius: 50%;
+  object-fit: contain;
+}
+
+/* Adjust the title spacing */
+.navbar__title {
+  margin-left: 10px;
+  font-size: 1.7rem;
+  font-family: 'Instrument Serif';
+}
+
+/* Ensure menu items are properly aligned */
+.navbar__items {
+  display: flex;
+  align-items: center;
+}
+
+/* Style the menu links */
+.navbar__link {
+  margin-left: 20px;
+  font-size: 1.0rem;
+}
+
+/* Ensure blog post content uses the correct fonts and spacing */
+.markdown h1,
+.markdown h2,
+.markdown h3,
+.markdown h4,
+.markdown h5,
+.markdown h6 {
+  font-family: 'Instrument Serif', serif;
+  word-spacing: 0.06em;
+  letter-spacing: 0.03em;
+}
+
+.markdown h1 {
+  font-size: 2.8rem;
+}
+
+.markdown h2 {
+  font-size: 2.3rem;
+}
+
+.markdown h3 {
+  font-size: 1.8rem;
+}
+
+.markdown p,
+.markdown li,
+.markdown a,
+.markdown span {
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 18px;
+  word-spacing: 0.05em;
+  letter-spacing: 0.02em;
+  color: #6e4108;
+}
+
+/* Dark mode font color for article body text */
+html[data-theme='dark'] .markdown p,
+html[data-theme='dark'] .markdown li,
+html[data-theme='dark'] .markdown a,
+html[data-theme='dark'] .markdown span {
+  color: #b2b2b2;
+}
+
+/* Code-share style for news page content */
+.news-content .markdown {
+  background-color: #ffffff;
+  padding: 1.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-family: 'Instrument Sans', sans-serif;
+}
+
+html[data-theme='dark'] .news-content .markdown {
+  background-color: #222222;
+  border: 1px solid #444444;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
