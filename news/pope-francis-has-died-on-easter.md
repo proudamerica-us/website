@@ -1,7 +1,6 @@
 ---
 slug: "pope-francis-has-died-on-easter-2025-04-21"
 title: "Pope Francis Has Died On Easter"
-authors: [proud-america-us]
 description: "Pope Francis died on Easter Monday, April 21, 2025, at the age of 88 at his residence in the Vatican's Casa Santa Marta"
 image: "/articles-analysis/pope-francis-has-died-on-easter-2025-04-21.png"
 tags: ["news", "critical", "vatican", "pope", "death"]

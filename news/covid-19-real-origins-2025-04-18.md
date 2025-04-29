@@ -1,7 +1,6 @@
 ---
 slug: "covid-19-true-origins-2025-04-18"
 title: "Covid 19 True Origins 2025"
-authors: [proud-america-us]
 description: "Investigating the lab leak theory, gain-of-function research, and institutional failures surrounding the COVID-19 pandemic."
 image: "/articles-analysis/covid-19-true-origins-2025.png"
 tags: ["news", "critical", "security", "covid", "hoax", "government", "global"]

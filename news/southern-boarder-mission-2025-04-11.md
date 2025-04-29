@@ -1,7 +1,6 @@
 ---
 slug: "southern-border-mission-2025-04-11"
 title: "Southern Border Mission 2025"
-authors: [proud-america-us]
 description: "National Security Presidential Memorandum"
 image: "/articles-analysis/border-security-proudamerica.png"
 tags: ["news", "border", "security", "deepstate"]

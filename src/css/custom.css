@@ -35,10 +35,11 @@
 
 .hero__title, .title_f1Hy {
   font-size: 3.5rem;
-  color: #0a3161;
+  color: #7ea0cb; /* Updated color for light theme */
   font-family: 'Instrument Serif', serif;
   word-spacing: 0.06em;
   letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 .hero__subtitle {
@@ -143,11 +144,11 @@ html[data-theme='dark'] .main {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
-  background-color: #f2e2b3;
+  background-color: #f2e2b3; /* Updated to match light theme */
 }
 
 html[data-theme='dark'] .mainWrapper_z2l0 {
-  background-color: #0a3161;
+  background-color: #f2e2b3; /* Updated to match light theme */
 }
 
 .footer__copyright {
@@ -183,6 +184,7 @@ html[data-theme='dark'] a:hover {
   --ifm-code-font-size: 95%;
 }
 
+/* Ensure announcement bar and navbar title styles are consistent */
 .announcementBarContent_xLdY, .navbar__title {
   color: #dae9fd;
   flex: 1 1 auto;
@@ -194,7 +196,7 @@ html[data-theme='dark'] a:hover {
 
 /* Card background to match front page */
 .card {
-  background-color: #f2e2b3;
+  background-color: #f2e2b3; /* Updated to match light theme */
 }
 
 /* Ensure header and image sections match */
@@ -205,12 +207,12 @@ html[data-theme='dark'] a:hover {
 
 /* Preserve dark mode card background */
 html[data-theme='dark'] .card {
-  background-color: #2b2b2b;
+  background-color: #f2e2b3; /* Updated to match light theme */
 }
 
 html[data-theme='dark'] .card__header,
 html[data-theme='dark'] .card__image {
-  background-color: #2b2b2b;
+  background-color: #f2e2b3; /* Updated to match light theme */
 }
 
 /* Custom CSS for Logo and Navbar */
@@ -304,4 +306,17 @@ html[data-theme='dark'] .news-content .markdown {
   background-color: #222222;
   border: 1px solid #444444;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 966px) {
+  /* Hide the logo on mobile */
+  .navbar__logo img {
+    display: none; /* Ain't working */
+  }
+
+  /* Set navbar title color to black on mobile */
+  .navbar__title {
+    color: #0a3161 !important; /* Use !important to override existing styles if needed */
+  }
 }

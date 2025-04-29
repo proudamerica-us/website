@@ -1,15 +1,13 @@
 module.exports = {
-  title: 'Proud America US',
-  tagline: 'Uncovering the Truth ★ Real News',
+  title: 'Proud America',
+  tagline: 'Uncovering the Truth - The Most Valuable Information',
   url: 'https://www.proudamerica.us',
   baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/proudamericaus.ico',
-
   organizationName: 'cichy',
   projectName: 'proudamerica',
-
   presets: [
     [
       'classic',
@@ -18,18 +16,18 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
         },
         blog: {
-          path: './articles',
+          path: './articles/temp',
           routeBasePath: '/articles-analysis',
           showReadingTime: true,
           blogTitle: 'Articles',
           blogDescription: 'Latest Articles & Analysis',
           blogSidebarTitle: 'Recent Articles',
-          authorsMapPath: '../src/authors.yml',
           feedOptions: {
             type: 'all',
-            copyright: `Copyright © ${new Date().getFullYear()} Proud America US`,
+            copyright: `Copyright © ${new Date().getFullYear()} Proud America`,
           },
           include: ['**/*.md', '**/*.mdx'],
+          exclude: [], // Explicitly include all
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -37,7 +35,6 @@ module.exports = {
       },
     ],
   ],
-
   plugins: [
     [
       '@docusaurus/plugin-content-blog',
@@ -49,8 +46,8 @@ module.exports = {
         blogTitle: 'News',
         blogDescription: 'Latest News Updates',
         blogSidebarTitle: 'Recent News',
-        authorsMapPath: '../src/authors.yml',
         include: ['**/*.md', '**/*.mdx'],
+        exclude: [],
       },
     ],
   ],

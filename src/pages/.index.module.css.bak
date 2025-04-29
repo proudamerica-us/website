@@ -34,17 +34,17 @@
 .sponsorAlertContainer {
   display: flex;
   flex-direction: row;
-  align-items: flex-start; /* Align top of logo with top of Weekly Sponsor */
+  align-items: center;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1.5rem; /* Reduced to move elements higher */
+  margin-top: 3rem; /* Increased to move the logo and alert lower */
   margin-bottom: 0.5rem;
 }
 
 /* Sponsor logo */
 .sponsorLogo {
-  width: auto; /* Maintain aspect ratio */
-  height: 3.69rem; /* Updated to 59.09px (59.09 / 16 ≈ 3.69rem) */
+  width: 50px; /* Small but visible */
+  height: auto;
 }
 
 /* Weekly Sponsor text */
@@ -512,14 +512,12 @@
 
   .sponsorAlertContainer {
     flex-direction: column;
-    align-items: center; /* Center-align for symmetry on mobile */
     gap: 0.5rem;
-    margin-top: 1rem; /* Reduced to move elements higher on mobile */
+    margin-top: 2rem; /* Adjusted for mobile */
   }
 
   .sponsorLogo {
-    width: auto;
-    height: 3.03rem; /* Proportional adjustment: 3.69rem * (2.3 / 2.8) ≈ 3.03rem */
+    width: 40px; /* Slightly smaller on mobile */
   }
 
   .weeklySponsor {

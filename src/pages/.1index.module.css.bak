@@ -44,7 +44,7 @@
 /* Sponsor logo */
 .sponsorLogo {
   width: auto; /* Maintain aspect ratio */
-  height: 3.69rem; /* Updated to 59.09px (59.09 / 16 ≈ 3.69rem) */
+  height: 2.8rem; /* Matches combined height of Weekly Sponsor (1rem + 0.2rem margin) + alert box (1.6rem) */
 }
 
 /* Weekly Sponsor text */
@@ -519,7 +519,7 @@
 
   .sponsorLogo {
     width: auto;
-    height: 3.03rem; /* Proportional adjustment: 3.69rem * (2.3 / 2.8) ≈ 3.03rem */
+    height: 2.3rem; /* Adjusted for mobile: Weekly Sponsor (0.7rem + 0.1rem margin) + alert box (0.9rem text + 0.4rem padding = 1.3rem) = 2.3rem */
   }
 
   .weeklySponsor {
