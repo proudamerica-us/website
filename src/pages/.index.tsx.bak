@@ -26,8 +26,8 @@ export default function Home() {
   const [animateCurtain, setAnimateCurtain] = useState(false);
   const [currentTheme, setCurrentTheme] = useState('light');
   const [isHydrated, setIsHydrated] = useState(false);
-  const newsRowRef = useRef<HTMLDivElement>(null);
-  const articlesRowRef = useRef<HTMLDivElement>(null);
+  const newsRowRef = useRef<HTMLDivElement>(null); // Ref for news blog row
+  const articlesRowRef = useRef<HTMLDivElement>(null); // Ref for articles blog row
 
   // Trigger animation manually for debugging
   const triggerAnimation = () => {
@@ -36,7 +36,7 @@ export default function Home() {
     setTimeout(() => {
       setAnimateCurtain(false);
       console.log('Curtain animation reset');
-    }, 1000);
+    }, 1000); // Matches 1s animation duration
   };
 
   // Detect theme changes
@@ -64,7 +64,7 @@ export default function Home() {
           setTimeout(() => {
             setAnimateCurtain(false);
             console.log('Curtain animation reset');
-          }, 1000);
+          }, 1000); // Matches 1s animation duration
         } else {
           console.log('Theme unchanged, skipping animation');
         }
@@ -320,6 +320,23 @@ export default function Home() {
     };
   }).filter(post => post.title && post.permalink);
 
+  // Handle "Discover More" / "Scroll Right" button click
+  const handleNextNews = () => {
+    if (newsRowRef.current) {
+      const cardWidth = newsRowRef.current.querySelector('.col')?.offsetWidth || 0;
+      newsRowRef.current.scrollBy({ left: cardWidth * 3, behavior: 'smooth' });
+      console.log('Next News clicked, scrolling right by:', cardWidth * 3);
+    }
+  };
+
+  const handleNextArticles = () => {
+    if (articlesRowRef.current) {
+      const cardWidth = articlesRowRef.current.querySelector('.col')?.offsetWidth || 0;
+      articlesRowRef.current.scrollBy({ left: cardWidth * 3, behavior: 'smooth' });
+      console.log('Next Articles clicked, scrolling right by:', cardWidth * 3);
+    }
+  };
+
   const hardcodedItems = [
     {
       title: 'Lorem Ipsum Dolor',
@@ -566,6 +583,9 @@ export default function Home() {
                     />
                   </div>
                 ))}
+                <button className={styles.nextButton} onClick={handleNextNews}>
+                  Discover More
+                </button>
               </div>
             ) : (
               <p>Loading news posts...</p>
@@ -591,6 +611,9 @@ export default function Home() {
                     />
                   </div>
                 ))}
+                <button className={styles.nextButton} onClick={handleNextArticles}>
+                  Discover More
+                </button>
               </div>
             ) : (
               <p>Loading blog posts...</p>

@@ -551,6 +551,43 @@
   scroll-snap-align: start; /* Snap to each card */
 }
 
+/* Next Posts button */
+.nextButton {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.4rem 0.2rem; /* Tiny button */
+  background-color: #b31942;
+  color: beige !important;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 0.7rem; /* Matches verticalLabel */
+  font-weight: bold;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  z-index: 10; /* Above cards */
+  width: 1.5rem; /* Narrow for compactness */
+  height: 6rem; /* Tall enough for vertical text */
+}
+
+.nextButton:hover {
+  background-color: #811235;
+}
+
+[data-theme='dark'] .nextButton {
+  background-color: #0a3161;
+}
+
+[data-theme='dark'] .nextButton:hover {
+  background-color: #05203f;
+}
+
 /* Scrollbar styling */
 .blogRow::-webkit-scrollbar {
   height: 8px;
@@ -738,5 +775,18 @@
     flex: 0 0 80%; /* Each card takes ~80% of viewport width */
     max-width: 80%;
     scroll-snap-align: start; /* Snap to each card */
+  }
+
+  /* Mobile button adjustments */
+  .nextButton {
+    font-size: 0.6rem; /* Smaller for mobile */
+    padding: 0.3rem 0.15rem; /* Tighter */
+    width: 1.2rem; /* Narrower */
+    height: 5rem; /* Shorter for mobile */
+  }
+
+  /* Change button text on mobile */
+  .nextButton::before {
+    content: 'Scroll Right';
   }
 }
