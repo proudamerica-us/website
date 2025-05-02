@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -26,6 +26,8 @@ export default function Home() {
   const [animateCurtain, setAnimateCurtain] = useState(false);
   const [currentTheme, setCurrentTheme] = useState('light');
   const [isHydrated, setIsHydrated] = useState(false);
+  const newsRowRef = useRef<HTMLDivElement>(null); // Ref for news blog row
+  const articlesRowRef = useRef<HTMLDivElement>(null); // Ref for articles blog row
 
   // Trigger animation manually for debugging
   const triggerAnimation = () => {
@@ -222,10 +224,10 @@ export default function Home() {
   ];
 
   const recentArticles = Array.isArray(blogPosts?.items) && blogPosts.items.length > 0
-    ? blogPosts.items.slice(0, 5)
+    ? blogPosts.items
     : fallbackArticles;
   const recentNews = Array.isArray(newsPosts?.items) && newsPosts.items.length > 0
-    ? newsPosts.items.slice(0, 5)
+    ? newsPosts.items
     : fallbackNews;
 
   const [isPaused, setIsPaused] = useState(false);
@@ -317,6 +319,23 @@ export default function Home() {
       },
     };
   }).filter(post => post.title && post.permalink);
+
+  // Handle "Discover More" / "Scroll Right" button click
+  const handleNextNews = () => {
+    if (newsRowRef.current) {
+      const cardWidth = newsRowRef.current.querySelector('.col')?.offsetWidth || 0;
+      newsRowRef.current.scrollBy({ left: cardWidth * 3, behavior: 'smooth' });
+      console.log('Next News clicked, scrolling right by:', cardWidth * 3);
+    }
+  };
+
+  const handleNextArticles = () => {
+    if (articlesRowRef.current) {
+      const cardWidth = articlesRowRef.current.querySelector('.col')?.offsetWidth || 0;
+      articlesRowRef.current.scrollBy({ left: cardWidth * 3, behavior: 'smooth' });
+      console.log('Next Articles clicked, scrolling right by:', cardWidth * 3);
+    }
+  };
 
   const hardcodedItems = [
     {
@@ -451,9 +470,6 @@ export default function Home() {
           <div className="container">
             <h1 className={styles.heroTitle}>Uncovering the Truth</h1>
             <p className="hero__subtitle">The Most Valuable Information</p>
-            <button onClick={triggerAnimation} style={{ marginTop: '10px', padding: '5px 10px' }}>
-              Test Curtain Animation
-            </button>
           </div>
           <div className={styles.tickerContainer}>
             <div className={styles.sponsorAlertContainer}>
@@ -552,7 +568,7 @@ export default function Home() {
           <div className="container">
             <h2>Latest News</h2>
             {isHydrated && newsWithImages.length > 0 ? (
-              <div className={clsx('row', styles.blogRow)}>
+              <div className={clsx('row', styles.blogRow)} ref={newsRowRef}>
                 {newsWithImages.map((post, index) => (
                   <div key={`news-card-${index}`} className="col col--4">
                     <BlogCard
@@ -567,6 +583,9 @@ export default function Home() {
                     />
                   </div>
                 ))}
+                <button className={styles.nextButton} onClick={handleNextNews}>
+                  Discover More
+                </button>
               </div>
             ) : (
               <p>Loading news posts...</p>
@@ -577,7 +596,7 @@ export default function Home() {
           <div className="container">
             <h2>Latest Articles & Analysis</h2>
             {isHydrated && articlesWithImages.length > 0 ? (
-              <div className={clsx('row', styles.blogRow)}>
+              <div className={clsx('row', styles.blogRow)} ref={articlesRowRef}>
                 {articlesWithImages.map((post, index) => (
                   <div key={`article-card-${index}`} className="col col--4">
                     <BlogCard
@@ -592,6 +611,9 @@ export default function Home() {
                     />
                   </div>
                 ))}
+                <button className={styles.nextButton} onClick={handleNextArticles}>
+                  Discover More
+                </button>
               </div>
             ) : (
               <p>Loading blog posts...</p>
