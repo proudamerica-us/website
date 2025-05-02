@@ -1,14 +1,9 @@
-/* stylelint-disable docusaurus/copyright-header */
-/**
- * Any CSS included here will be global. The classic template
- * bundles Infima by default. Infima is a CSS framework designed to
- * work well for content-centric websites.
- */
+/* src/css/custom.css */
 
 /* Import Instrument Serif and Instrument Sans from Google Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
-/* You can override the default Infima variables here. */
+/* Root variables */
 :root {
   --ifm-color-primary: #b31942;
   --ifm-color-primary-dark: #e68700;
@@ -24,8 +19,23 @@
   --ifm-heading-font-size-multiplier: 1.2;
   --ifm-word-spacing: 0.05em;
   --ifm-letter-spacing: 0.02em;
+  --ifm-hero-background-color: #b31942; /* Light theme hero background */
 }
 
+/* Dark theme variables */
+[data-theme='dark'] {
+  --ifm-color-primary: #b31942;
+  --ifm-color-primary-dark: #e68700;
+  --ifm-color-primary-darker: #d98000;
+  --ifm-color-primary-darkest: #b36900;
+  --ifm-color-primary-light: #ffa11a;
+  --ifm-color-primary-lighter: #ffa626;
+  --ifm-color-primary-lightest: #ffb64d;
+  --ifm-code-font-size: 95%;
+  --ifm-hero-background-color: #0a3161; /* Dark theme hero background */
+}
+
+/* Highlighted code lines */
 .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.1);
   display: block;
@@ -33,9 +43,9 @@
   padding: 0 var(--ifm-pre-padding);
 }
 
-.hero__title, .title_f1Hy {
+.hero__title, .title_f1Hy.header-light {
   font-size: 3.5rem;
-  color: #7ea0cb; /* Updated color for light theme */
+  color: #614016; /* Updated font color */
   font-family: 'Instrument Serif', serif;
   word-spacing: 0.06em;
   letter-spacing: 0.03em;
@@ -50,27 +60,40 @@
   letter-spacing: 0.02em;
 }
 
+/* Hero section background */
+.hero--primary {
+  background-color: var(--ifm-hero-background-color);
+}
+
+html[data-theme='dark'] .hero--primary {
+  background-color: #0a3161 !important;
+}
+
 html[data-theme='dark'] .docusaurus-highlight-code-line {
   background-color: rgba(0, 0, 0, 0.3);
 }
 
-/* Updated dark mode colors for hero and title */
-html[data-theme='dark'] .title_f1Hy,
-html[data-theme='dark'] .hero__subtitle,
-html[data-theme='dark'] .hero__title {
-  color: #b2b2b2;
+/* Dark mode header styles */
+html[data-theme='dark'] .title_f1Hy.header-dark {
+  color: #614016; /* Same font color for dark theme */
   font-family: 'Instrument Serif', serif;
   word-spacing: 0.06em;
   letter-spacing: 0.03em;
 }
 
+/* Dark mode hero title and subtitle */
+html[data-theme='dark'] .hero__title {
+  color: #b2b2b2;
+}
+
 html[data-theme='dark'] .hero__subtitle {
+  color: #b2b2b2;
   font-family: 'Instrument Sans', sans-serif;
   word-spacing: 0.05em;
   letter-spacing: 0.02em;
 }
 
-/* Highlight for marked text in hero section (dark mode only) */
+/* Dark mode marked text in hero */
 html[data-theme='dark'] .hero mark {
   background-color: #444444;
   color: #dae9fd;
@@ -78,8 +101,7 @@ html[data-theme='dark'] .hero mark {
   border-radius: 3px;
 }
 
-/* PROUDAMERICA CSS */
-
+/* Navbar */
 .navbar--fixed-top {
   position: sticky;
   top: 0;
@@ -104,11 +126,19 @@ html[data-theme='dark'] .hero mark {
   letter-spacing: 0.02em;
 }
 
+/* Navbar hover and active styles */
 .navbar__link--active, .navbar__link:hover {
   color: #dae9fd;
   text-decoration: none;
 }
 
+html[data-theme='dark'] .navbar__link--active,
+html[data-theme='dark'] .navbar__link:hover {
+  color: #dbeafd;
+  text-decoration: none;
+}
+
+/* Global styles */
 * {
   box-sizing: border-box;
   color: #6a4207;
@@ -117,22 +147,19 @@ html[data-theme='dark'] .hero mark {
   letter-spacing: var(--ifm-letter-spacing);
 }
 
-.hero--primary {
-  --ifm-hero-background-color: #b31942;
-  --ifm-hero-text-color: var(--ifm-font-color-base-inverse);
+/* Main content background */
+.mainWrapper_z2l0 {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  background-color: #f3e3b4; /* Light theme background */
 }
 
-/* CONTENT BG DARK WHITE
-main {
-  padding: 2rem 3em;
-  background-color: beige;
+html[data-theme='dark'] .mainWrapper_z2l0 {
+  background-color: #0a3161; /* Dark theme background */
 }
 
-html[data-theme='dark'] .main {
-  color: red;
-  background-color: black;
-} */
-
+/* Footer */
 .footer--dark {
   --ifm-footer-background-color: #b31942;
   --ifm-footer-color: var(--ifm-footer-link-color);
@@ -140,21 +167,11 @@ html[data-theme='dark'] .main {
   --ifm-footer-title-color: var(--ifm-color-white);
 }
 
-.mainWrapper_z2l0 {
-  display: flex;
-  flex: 1 0 auto;
-  flex-direction: column;
-  background-color: #f2e2b3; /* Updated to match light theme */
-}
-
-html[data-theme='dark'] .mainWrapper_z2l0 {
-  background-color: #f2e2b3; /* Updated to match light theme */
-}
-
 .footer__copyright {
   color: beige;
 }
 
+/* Links */
 a {
   color: #b31942;
   text-decoration: var(--ifm-link-decoration);
@@ -165,64 +182,37 @@ a:hover {
   text-decoration: var(--ifm-link-hover-decoration);
 }
 
-/* Updated hover styles for dark mode */
 html[data-theme='dark'] .footer__link-item:hover,
-html[data-theme='dark'] a:hover {
-  color: #929292;
+html[data-theme='dark'] a:not(.navbar__link):hover {
+  color: #dbeafd;
 }
 
-/* DARK MODE PROUDAMERICAUS */
-
-[data-theme='dark'] {
-  --ifm-color-primary: #b31942;
-  --ifm-color-primary-dark: #e68700;
-  --ifm-color-primary-darker: #d98000;
-  --ifm-color-primary-darkest: #b36900;
-  --ifm-color-primary-light: #ffa11a;
-  --ifm-color-primary-lighter: #ffa626;
-  --ifm-color-primary-lightest: #ffb64d;
-  --ifm-code-font-size: 95%;
-}
-
-/* Ensure announcement bar and navbar title styles are consistent */
-.announcementBarContent_xLdY, .navbar__title {
-  color: #dae9fd;
-  flex: 1 1 auto;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 1.7rem;
-  word-spacing: 0.05em;
-  letter-spacing: 0.02em;
-}
-
-/* Card background to match front page */
+/* Card styles */
 .card {
-  background-color: #f2e2b3; /* Updated to match light theme */
+  background-color: #f2e2b3;
 }
 
-/* Ensure header and image sections match */
 .card__header,
 .card__image {
   background-color: #f5f5dc;
 }
 
-/* Preserve dark mode card background */
 html[data-theme='dark'] .card {
-  background-color: #f2e2b3; /* Updated to match light theme */
+  background-color: #f2e2b3;
 }
 
 html[data-theme='dark'] .card__header,
 html[data-theme='dark'] .card__image {
-  background-color: #f2e2b3; /* Updated to match light theme */
+  background-color: #f2e2b3;
 }
 
-/* Custom CSS for Logo and Navbar */
+/* Navbar logo and title */
 .navbar {
   height: 60px;
   padding: 10px 20px;
   align-items: center;
 }
 
-/* Style the logo */
 .navbar__logo img {
   width: 87px;
   height: 87px;
@@ -230,26 +220,23 @@ html[data-theme='dark'] .card__image {
   object-fit: contain;
 }
 
-/* Adjust the title spacing */
 .navbar__title {
   margin-left: 10px;
   font-size: 1.7rem;
   font-family: 'Instrument Serif';
 }
 
-/* Ensure menu items are properly aligned */
 .navbar__items {
   display: flex;
   align-items: center;
 }
 
-/* Style the menu links */
 .navbar__link {
   margin-left: 20px;
   font-size: 1.0rem;
 }
 
-/* Ensure blog post content uses the correct fonts and spacing */
+/* Markdown styles */
 .markdown h1,
 .markdown h2,
 .markdown h3,
@@ -284,7 +271,6 @@ html[data-theme='dark'] .card__image {
   color: #6e4108;
 }
 
-/* Dark mode font color for article body text */
 html[data-theme='dark'] .markdown p,
 html[data-theme='dark'] .markdown li,
 html[data-theme='dark'] .markdown a,
@@ -292,7 +278,7 @@ html[data-theme='dark'] .markdown span {
   color: #b2b2b2;
 }
 
-/* Code-share style for news page content */
+/* News content */
 .news-content .markdown {
   background-color: #ffffff;
   padding: 1.5rem;
@@ -308,15 +294,13 @@ html[data-theme='dark'] .news-content .markdown {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* Mobile-specific styles */
+/* Mobile styles */
 @media screen and (max-width: 966px) {
-  /* Hide the logo on mobile */
   .navbar__logo img {
-    display: none; /* Ain't working */
+    display: none;
   }
 
-  /* Set navbar title color to black on mobile */
   .navbar__title {
-    color: #0a3161 !important; /* Use !important to override existing styles if needed */
+    color: #0a3161 !important;
   }
 }

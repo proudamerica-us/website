@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
@@ -11,7 +11,7 @@ import BlogCard from '../components/BlogCard';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import Link from '@docusaurus/Link';
 
-const SafeLink = ({ to, children, className }) => {
+const SafeLink = ({ to, children, className }: { to: string; children: React.ReactNode; className?: string }) => {
   try {
     return <Link to={to} className={className}>{children}</Link>;
   } catch (error) {
@@ -23,8 +23,94 @@ const SafeLink = ({ to, children, className }) => {
 export default function Home() {
   const { siteConfig } = useDocusaurusContext();
   const isBrowser = useIsBrowser();
+  const [animateCurtain, setAnimateCurtain] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState('light');
+  const [isHydrated, setIsHydrated] = useState(false);
 
-  // Static data for trends table
+  // Trigger animation manually for debugging
+  const triggerAnimation = () => {
+    console.log('Manually triggering curtain animation for theme:', currentTheme);
+    setAnimateCurtain(true);
+    setTimeout(() => {
+      setAnimateCurtain(false);
+      console.log('Curtain animation reset');
+    }, 1000); // Matches 1s animation duration
+  };
+
+  // Detect theme changes
+  useEffect(() => {
+    if (!isBrowser) return;
+
+    console.log('useEffect running, isBrowser:', isBrowser);
+
+    const setupToggleListener = () => {
+      const toggleButton = document.querySelector(
+        '.colorModeToggle_DEke, .toggle_vylO, button[aria-label*="theme"], button[title*="theme"]'
+      );
+      if (!toggleButton) {
+        console.warn('Theme toggle button not found');
+        return null;
+      }
+
+      const handleToggle = () => {
+        const newTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        console.log('Toggle button clicked, newTheme:', newTheme, 'currentTheme:', currentTheme);
+        if (newTheme !== currentTheme) {
+          setCurrentTheme(newTheme);
+          setAnimateCurtain(true);
+          console.log('Triggering curtain animation for theme:', newTheme);
+          setTimeout(() => {
+            setAnimateCurtain(false);
+            console.log('Curtain animation reset');
+          }, 1000); // Matches 1s animation duration
+        } else {
+          console.log('Theme unchanged, skipping animation');
+        }
+      };
+
+      toggleButton.addEventListener('click', handleToggle);
+      console.log('Added event listener to theme toggle:', toggleButton.className, toggleButton.getAttribute('aria-label'));
+      return () => {
+        toggleButton.removeEventListener('click', handleToggle);
+        console.log('Removed event listener from theme toggle');
+      };
+    };
+
+    const observeThemeChanges = () => {
+      const observer = new MutationObserver(() => {
+        const newTheme = document.documentElement.getAttribute('data-theme') || 'light';
+        console.log('MutationObserver detected theme change:', newTheme);
+        if (newTheme !== currentTheme) {
+          setCurrentTheme(newTheme);
+          setAnimateCurtain(true);
+          console.log('Triggering curtain animation via MutationObserver');
+          setTimeout(() => {
+            setAnimateCurtain(false);
+            console.log('Curtain animation reset via MutationObserver');
+          }, 1000);
+        }
+      });
+      observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+      return () => observer.disconnect();
+    };
+
+    const timeout = setTimeout(() => {
+      const toggleCleanup = setupToggleListener();
+      const observerCleanup = observeThemeChanges();
+      const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
+      console.log('Initial theme:', initialTheme);
+      setCurrentTheme(initialTheme);
+      setIsHydrated(true);
+      return () => {
+        if (toggleCleanup) toggleCleanup();
+        observerCleanup();
+        console.log('Cleaned up toggle and observer');
+      };
+    }, 100);
+
+    return () => clearTimeout(timeout);
+  }, [isBrowser, currentTheme]);
+
   const lastWeekTrends = {
     keywords: 'Trump, Musk, Migration',
     events: 'Election Rally, Tech Summit',
@@ -36,7 +122,6 @@ export default function Home() {
     quotes: 'Innovation Quote',
   };
 
-  // Tooltip state
   const [tooltip, setTooltip] = useState<{
     visible: boolean;
     content: string;
@@ -45,7 +130,6 @@ export default function Home() {
     position: 'top' | 'bottom';
   }>({ visible: false, content: '', x: 0, y: 0, position: 'bottom' });
 
-  // Handle tooltip toggle on click
   const toggleTooltip = (content: string, event: React.MouseEvent) => {
     event.preventDefault();
     const rect = event.currentTarget.getBoundingClientRect();
@@ -53,29 +137,23 @@ export default function Home() {
     const tooltipHeight = 100;
     const padding = 10;
 
-    // Determine if it's a "next week's most popular" cell
     const isNextWeekCell =
       content.includes('AI, Border, Economy') ||
       content.includes('Policy Debate, Space Launch') ||
       content.includes('Innovation Quote');
 
-    // Calculate position
-    let position: 'top' | 'bottom' = 'bottom'; // Default to bottom for all
-    let x = isNextWeekCell ? rect.right : rect.left + rect.width / 2; // Right edge for next week, center for last week
-    let y = rect.bottom + 10; // Always below
+    let position: 'top' | 'bottom' = 'bottom';
+    let x = isNextWeekCell ? rect.right : rect.left + rect.width / 2;
+    let y = rect.bottom + 10;
 
-    // Boundary checks
     const viewportWidth = window.innerWidth;
     const viewportHeight = window.innerHeight;
 
-    // Adjust x
     if (isNextWeekCell) {
-      // For next week's bottom tooltip, keep arrow near right edge of text
       if (x + tooltipWidth > viewportWidth - padding) {
         x = viewportWidth - tooltipWidth - padding;
       }
     } else {
-      // For last week's bottom tooltip, center the tooltip
       if (x + tooltipWidth / 2 > viewportWidth - padding) {
         x = viewportWidth - tooltipWidth / 2 - padding;
       } else if (x - tooltipWidth / 2 < padding) {
@@ -83,9 +161,8 @@ export default function Home() {
       }
     }
 
-    // Adjust y
     if (y + tooltipHeight > viewportHeight - padding) {
-      y = rect.top - tooltipHeight - 10; // Fallback to above
+      y = rect.top - tooltipHeight - 10;
       position = 'top';
     }
 
@@ -104,23 +181,20 @@ export default function Home() {
     }
   };
 
-  // Handle close button click
   const closeTooltip = () => {
     console.log('Close Tooltip');
     setTooltip({ visible: false, content: '', x: 0, y: 0, position: 'bottom' });
   };
 
-  // Tooltip content for each cell
   const tooltipContent = {
-    lastKeywords: '<span class="' + styles.tooltipText + '">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span> <a href="#" class="' + styles.tooltipSubscribe + '" onClick="event.preventDefault()">Subscribe $5/month</a>',
-    lastEvents: '<span class="' + styles.tooltipText + '">Sed do eiusmod tempor incididunt ut labore et dolore.</span> <a href="#" class="' + styles.tooltipSubscribe + '" onClick="event.preventDefault()">Subscribe $5/month</a>',
-    lastQuotes: '<span class="' + styles.tooltipText + '">Ut enim ad minim veniam, quis nostrud exercitation.</span> <a href="#" class="' + styles.tooltipSubscribe + '" onClick="event.preventDefault()">Subscribe $5/month</a>',
-    nextKeywords: '<span class="' + styles.tooltipText + '">Duis aute irure dolor in reprehenderit in voluptate.</span> <a href="#" class="' + styles.tooltipSubscribe + '" onClick="event.preventDefault()">Subscribe $5/month</a>',
-    nextEvents: '<span class="' + styles.tooltipText + '">Excepteur sint occaecat cupidatat non proident.</span> <a href="#" class="' + styles.tooltipSubscribe + '" onClick="event.preventDefault()">Subscribe $5/month</a>',
-    nextQuotes: '<span class="' + styles.tooltipText + '">Sunt in culpa qui officia deserunt mollit anim.</span> <a href="#" class="' + styles.tooltipSubscribe + '" onClick="event.preventDefault()">Subscribe $5/month</a>',
+    lastKeywords: `<span class="${styles.tooltipText}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
+    lastEvents: `<span class="${styles.tooltipText}">Sed do eiusmod tempor incididunt ut labore et dolore.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
+    lastQuotes: `<span class="${styles.tooltipText}">Ut enim ad minim veniam, quis nostrud exercitation.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
+    nextKeywords: `<span class="${styles.tooltipText}">Dwekkis aute irure dolor in reprehenderit in voluptate.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
+    nextEvents: `<span class="${styles.tooltipText}">Excepteur sint occaecat cupidatat non proident.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
+    nextQuotes: `<span class="${styles.tooltipText}">Sunt in culpa qui officia deserunt mollit anim.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
   };
 
-  // Fallback data
   const fallbackNews = [
     {
       title: 'FALLBACK NEWS 1',
@@ -270,10 +344,8 @@ export default function Home() {
   const secondTickerClass = isBrowser ? clsx(styles.secondNewsTicker, { [styles.paused]: isSecondPaused }) : styles.secondNewsTicker;
   const thirdTickerClass = isBrowser ? clsx(styles.thirdNewsTicker, { [styles.paused]: isThirdPaused }) : styles.thirdNewsTicker;
 
-  // Debugging: Static mode toggle
   const staticMode = false;
 
-  // Alert content (to be connected to xAI later)
   const alertContent = {
     danger: 'FIRES IN',
     region: 'LA',
@@ -281,7 +353,7 @@ export default function Home() {
 
   return (
     <Layout description={siteConfig.tagline}>
-      <header className={clsx('hero', 'hero--primary', styles.heroBanner)}>
+      <header className={clsx('hero', 'hero--primary', styles.heroBanner, { [styles.animateCurtain]: animateCurtain })}>
         <video
           className={styles.heroVideo}
           autoPlay
@@ -293,7 +365,6 @@ export default function Home() {
           <source src="/articles-analysis/hero-animation.mp4" type="video/mp4" />
         </video>
         <div className={styles.heroContainer}>
-          {/* Trends table */}
           <table className={styles.topTrendsTable}>
             <thead>
               <tr>
@@ -362,7 +433,6 @@ export default function Home() {
               </tr>
             </tbody>
           </table>
-          {/* Tooltip */}
           {tooltip.visible && (
             <div
               className={styles.tooltip}
@@ -381,9 +451,11 @@ export default function Home() {
           <div className="container">
             <h1 className={styles.heroTitle}>Uncovering the Truth</h1>
             <p className="hero__subtitle">The Most Valuable Information</p>
+            <button onClick={triggerAnimation} style={{ marginTop: '10px', padding: '5px 10px' }}>
+              Test Curtain Animation
+            </button>
           </div>
           <div className={styles.tickerContainer}>
-            {/* Sponsor and Alert Section - Inline, centered above MAGA NEWS */}
             <div className={styles.sponsorAlertContainer}>
               <a href="https://www.iana.io/" target="_blank" rel="noopener noreferrer">
                 <img
@@ -479,7 +551,7 @@ export default function Home() {
         <section className={styles.blogSection}>
           <div className="container">
             <h2>Latest News</h2>
-            {newsWithImages.length > 0 ? (
+            {isHydrated && newsWithImages.length > 0 ? (
               <div className={clsx('row', styles.blogRow)}>
                 {newsWithImages.map((post, index) => (
                   <div key={`news-card-${index}`} className="col col--4">
@@ -497,14 +569,14 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <p>No news posts available.</p>
+              <p>Loading news posts...</p>
             )}
           </div>
         </section>
         <section className={styles.blogSection}>
           <div className="container">
             <h2>Latest Articles & Analysis</h2>
-            {articlesWithImages.length > 0 ? (
+            {isHydrated && articlesWithImages.length > 0 ? (
               <div className={clsx('row', styles.blogRow)}>
                 {articlesWithImages.map((post, index) => (
                   <div key={`article-card-${index}`} className="col col--4">
@@ -522,13 +594,13 @@ export default function Home() {
                 ))}
               </div>
             ) : (
-              <p>No blog posts available.</p>
+              <p>Loading blog posts...</p>
             )}
           </div>
         </section>
       </main>
       {isBrowser && (
-        <div id="navbar-realtime-clock" className={styles.clockWrapper}></div>
+        <div id="footer-realtime-clock" className={styles.clockWrapper}></div>
       )}
     </Layout>
   );
