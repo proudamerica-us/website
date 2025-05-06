@@ -1,3 +1,4 @@
+// src/pages/index.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import Layout from '@theme/Layout';
@@ -6,12 +7,11 @@ import styles from './index.module.css';
 import HomepageContent from './__index.md';
 import blogPosts from '@site/.docusaurus/docusaurus-plugin-content-blog/default/blog-post-list-prop-default.json';
 import newsPosts from '@site/.docusaurus/docusaurus-plugin-content-blog/news/blog-post-list-prop-news.json';
-import type { BlogPost } from '@site/.docusaurus/docusaurus-plugin-content-blog/default/blog-post-list-prop-default.json';
 import BlogCard from '../components/BlogCard';
 import useIsBrowser from '@docusaurus/useIsBrowser';
 import Link from '@docusaurus/Link';
 
-const SafeLink = ({ to, children, className }: { to: string; children: React.ReactNode; className?: string }) => {
+const SafeLink = ({ to, children, className }) => {
   try {
     return <Link to={to} className={className}>{children}</Link>;
   } catch (error) {
@@ -26,24 +26,14 @@ export default function Home() {
   const [animateCurtain, setAnimateCurtain] = useState(false);
   const [currentTheme, setCurrentTheme] = useState('light');
   const [isHydrated, setIsHydrated] = useState(false);
-  const newsRowRef = useRef<HTMLDivElement>(null);
-  const articlesRowRef = useRef<HTMLDivElement>(null);
+  const newsRowRef = useRef(null);
+  const articlesRowRef = useRef(null);
 
-  // Trigger animation manually for debugging
-  const triggerAnimation = () => {
-    console.log('Manually triggering curtain animation for theme:', currentTheme);
-    setAnimateCurtain(true);
-    setTimeout(() => {
-      setAnimateCurtain(false);
-      console.log('Curtain animation reset');
-    }, 1000);
-  };
-
-  // Detect theme changes
+  // Theme detection and hydration
   useEffect(() => {
     if (!isBrowser) return;
 
-    console.log('useEffect running, isBrowser:', isBrowser);
+    console.log('Starting theme detection and hydration');
 
     const setupToggleListener = () => {
       const toggleButton = document.querySelector(
@@ -56,40 +46,26 @@ export default function Home() {
 
       const handleToggle = () => {
         const newTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        console.log('Toggle button clicked, newTheme:', newTheme, 'currentTheme:', currentTheme);
+        console.log(`Theme toggled to: ${newTheme}`);
         if (newTheme !== currentTheme) {
           setCurrentTheme(newTheme);
           setAnimateCurtain(true);
-          console.log('Triggering curtain animation for theme:', newTheme);
-          setTimeout(() => {
-            setAnimateCurtain(false);
-            console.log('Curtain animation reset');
-          }, 1000);
-        } else {
-          console.log('Theme unchanged, skipping animation');
+          setTimeout(() => setAnimateCurtain(false), 1000);
         }
       };
 
       toggleButton.addEventListener('click', handleToggle);
-      console.log('Added event listener to theme toggle:', toggleButton.className, toggleButton.getAttribute('aria-label'));
-      return () => {
-        toggleButton.removeEventListener('click', handleToggle);
-        console.log('Removed event listener from theme toggle');
-      };
+      return () => toggleButton.removeEventListener('click', handleToggle);
     };
 
     const observeThemeChanges = () => {
       const observer = new MutationObserver(() => {
         const newTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        console.log('MutationObserver detected theme change:', newTheme);
+        console.log(`Theme changed via observer: ${newTheme}`);
         if (newTheme !== currentTheme) {
           setCurrentTheme(newTheme);
           setAnimateCurtain(true);
-          console.log('Triggering curtain animation via MutationObserver');
-          setTimeout(() => {
-            setAnimateCurtain(false);
-            console.log('Curtain animation reset via MutationObserver');
-          }, 1000);
+          setTimeout(() => setAnimateCurtain(false), 1000);
         }
       });
       observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
@@ -97,16 +73,18 @@ export default function Home() {
     };
 
     const timeout = setTimeout(() => {
+      console.log('Hydration timeout triggered');
       const toggleCleanup = setupToggleListener();
       const observerCleanup = observeThemeChanges();
       const initialTheme = document.documentElement.getAttribute('data-theme') || 'light';
-      console.log('Initial theme:', initialTheme);
+      console.log(`Initial theme set: ${initialTheme}`);
       setCurrentTheme(initialTheme);
       setIsHydrated(true);
+      console.log('Hydration complete, isHydrated: true');
       return () => {
         if (toggleCleanup) toggleCleanup();
         observerCleanup();
-        console.log('Cleaned up toggle and observer');
+        clearTimeout(timeout);
       };
     }, 100);
 
@@ -124,16 +102,21 @@ export default function Home() {
     quotes: 'Innovation Quote',
   };
 
-  const [tooltip, setTooltip] = useState<{
-    visible: boolean;
-    content: string;
-    x: number;
-    y: number;
-    position: 'top' | 'bottom';
-  }>({ visible: false, content: '', x: 0, y: 0, position: 'bottom' });
+  const [tooltip, setTooltip] = useState({
+    visible: false,
+    content: '',
+    x: 0,
+    y: 0,
+    position: 'bottom',
+  });
 
-  const toggleTooltip = (content: string, event: React.MouseEvent) => {
+  const toggleTooltip = (content, event) => {
     event.preventDefault();
+    if (!content || typeof content !== 'string') {
+      console.error('Invalid tooltip content:', content);
+      return;
+    }
+
     const rect = event.currentTarget.getBoundingClientRect();
     const tooltipWidth = 200;
     const tooltipHeight = 100;
@@ -144,7 +127,7 @@ export default function Home() {
       content.includes('Policy Debate, Space Launch') ||
       content.includes('Innovation Quote');
 
-    let position: 'top' | 'bottom' = 'bottom';
+    let position = 'bottom';
     let x = isNextWeekCell ? rect.right : rect.left + rect.width / 2;
     let y = rect.bottom + 10;
 
@@ -168,23 +151,16 @@ export default function Home() {
       position = 'top';
     }
 
-    console.log('Toggle Tooltip:', { content, x, y, position, visible: !tooltip.visible });
-
-    if (tooltip.visible && tooltip.content === content) {
-      setTooltip({ visible: false, content: '', x: 0, y: 0, position: 'bottom' });
-    } else {
-      setTooltip({
-        visible: true,
-        content,
-        x,
-        y,
-        position,
-      });
-    }
+    setTooltip({
+      visible: !tooltip.visible || tooltip.content !== content,
+      content,
+      x,
+      y,
+      position,
+    });
   };
 
   const closeTooltip = () => {
-    console.log('Close Tooltip');
     setTooltip({ visible: false, content: '', x: 0, y: 0, position: 'bottom' });
   };
 
@@ -192,7 +168,7 @@ export default function Home() {
     lastKeywords: `<span class="${styles.tooltipText}">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
     lastEvents: `<span class="${styles.tooltipText}">Sed do eiusmod tempor incididunt ut labore et dolore.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
     lastQuotes: `<span class="${styles.tooltipText}">Ut enim ad minim veniam, quis nostrud exercitation.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
-    nextKeywords: `<span class="${styles.tooltipText}">Dwekkis aute irure dolor in reprehenderit in voluptate.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
+    nextKeywords: `<span class="${styles.tooltipText}">Duis aute irure dolor in reprehenderit in voluptate.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
     nextEvents: `<span class="${styles.tooltipText}">Excepteur sint occaecat cupidatat non proident.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
     nextQuotes: `<span class="${styles.tooltipText}">Sunt in culpa qui officia deserunt mollit anim.</span> <a href="#" class="${styles.tooltipSubscribe}" onClick="event.preventDefault()">Subscribe $5/month</a>`,
   };
@@ -201,12 +177,14 @@ export default function Home() {
     {
       title: 'FALLBACK NEWS 1',
       permalink: '#',
-      frontMatter: { description: 'THIS IS A FALLBACK NEWS DESCRIPTION.' },
+      date: new Date().toISOString(),
+      frontMatter: { description: 'THIS IS A FALLBACK NEWS DESCRIPTION.', image: '/img/proudamerica.webp' },
     },
     {
       title: 'FALLBACK NEWS 2',
       permalink: '#',
-      frontMatter: { description: 'ANOTHER FALLBACK NEWS DESCRIPTION.' },
+      date: new Date().toISOString(),
+      frontMatter: { description: 'ANOTHER FALLBACK NEWS DESCRIPTION.', image: '/img/proudamerica.webp' },
     },
   ];
 
@@ -214,12 +192,14 @@ export default function Home() {
     {
       title: 'FALLBACK ARTICLE 1',
       permalink: '#',
-      frontMatter: { description: 'THIS IS A FALLBACK ARTICLE DESCRIPTION.' },
+      date: new Date().toISOString(),
+      frontMatter: { description: 'THIS IS A FALLBACK ARTICLE DESCRIPTION.', image: '/img/proudamerica.webp' },
     },
     {
       title: 'FALLBACK ARTICLE 2',
       permalink: '#',
-      frontMatter: { description: 'ANOTHER FALLBACK ARTICLE DESCRIPTION.' },
+      date: new Date().toISOString(),
+      frontMatter: { description: 'ANOTHER FALLBACK ARTICLE DESCRIPTION.', image: '/img/proudamerica.webp' },
     },
   ];
 
@@ -242,6 +222,7 @@ export default function Home() {
   const handleThirdMouseOut = () => setIsThirdPaused(false);
 
   const articleImageMap = {
+    'deep-state-century-schemes': '/articles-analysis/deep-state-century.png',
     'pope-francis-a-legacy-of-reform': '/articles-analysis/pope-francis-a-legacy-of-reform.png',
     'deepstate-market-stress-test': '/articles-analysis/deepstate-market-stress-test.png',
     'krav-maga': '/articles-analysis/krav-maga.png',
@@ -257,6 +238,7 @@ export default function Home() {
   };
 
   const articleDescriptionMap = {
+    'deep-state-century-schemes': 'An in-depth exploration of historical and modern mechanisms used by the Deep State to control resources, minds, and markets — from ancient Egypt to Elon Musk.',
     'pope-francis-a-legacy-of-reform': 'Exploring Pope Francis’s legacy of reform and compassion.',
     'deepstate-market-stress-test': 'Analysis of market stress tests and deep state influence.',
     'krav-maga': 'Krav Maga: Self-defense and its cultural implications.',
@@ -272,9 +254,9 @@ export default function Home() {
   };
 
   const newsImageMap = {
+    'southern-border-mission-2025-04-11': '/articles-analysis/border-security-proudamerica.png',
     'pope-francis-has-died-on-easter-2025-04-21': '/articles-analysis/pope-francis-has-died-on-easter-2025-04-21.png',
     'covid-19-true-origins-2025-04-18': '/articles-analysis/covid-19-true-origins-2025.png',
-    'southern-border-mission-2025-04-11': '/articles-analysis/border-security-proudamerica.png',
   };
 
   const articlesWithImages = recentArticles.map(post => {
@@ -282,10 +264,13 @@ export default function Home() {
     const image = articleImageMap[slug] || '/img/proudamerica.webp';
     const description = (articleDescriptionMap[slug] || post.frontMatter?.description || 'NO DESCRIPTION AVAILABLE.').toUpperCase();
     const title = (post.title || 'NO TITLE AVAILABLE').toUpperCase();
+    console.log(`Article: ${title}, Image: ${image}, Slug: ${slug}`);
     return {
       ...post,
       title,
+      date: post.date || new Date().toISOString(),
       frontMatter: {
+        ...post.frontMatter,
         image,
         description,
       },
@@ -309,9 +294,11 @@ export default function Home() {
     }
     description = description.toUpperCase();
     const title = (post.title || 'NO TITLE AVAILABLE').toUpperCase();
+    console.log(`News: ${title}, Image: ${image}, Slug: ${slug}`);
     return {
       ...post,
       title,
+      date: post.date || new Date().toISOString(),
       frontMatter: {
         ...post.frontMatter,
         image,
@@ -367,6 +354,120 @@ export default function Home() {
           <source src="/articles-analysis/hero-animation.mp4" type="video/mp4" />
         </video>
         <div className={styles.heroContainer}>
+          <div className="container">
+            <h1 className={styles.heroTitle}>Discovering the Truth</h1>
+            <p className="hero__subtitle">Most Valuable Information</p>
+            <div className={styles.sponsorAlertContainer}>
+              <a href="https://www.iana.io/" target="_blank" rel="noopener noreferrer">
+                <img
+                  src="/sponsors/ianaio-logo.webp"
+                  alt="IANA Logo"
+                  className={styles.sponsorLogo}
+                  onError={() => console.error('Failed to load IANA logo')}
+                />
+              </a>
+              <div>
+                <div className={styles.weeklySponsor}>Weekly Sponsor</div>
+                <div className={styles.alertBox}>
+                  ALERT! {alertContent.danger} {alertContent.region}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.tickerContainer}>
+            <div className={styles.tickerLabel}>MAGA NEWS</div>
+            <div className={styles.tickerWrapper}>
+              <div className={staticMode ? styles.tickerStatic : tickerClass}>
+                <span className={styles.tickerItem} data-ticker="today-news">TODAY NEWS:</span>
+                {newsWithImages.map((post, index) => (
+                  <span
+                    key={`news-${index}`}
+                    className={styles.tickerItem}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
+                    data-ticker={`news-${index}`}
+                  >
+                    <img
+                      src="/img/proudamericaus.png"
+                      alt="Logo"
+                      className={styles.tickerLogo}
+                      onError={() => console.error('Failed to load ticker logo')}
+                    />
+                    <SafeLink to={post.permalink} className={styles.tickerTitle}>
+                      {post.title}
+                    </SafeLink>
+                    <span className={styles.tickerDescription}>: {post.frontMatter.description}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className={styles.tickerLabel}>BETWEEN THE LINES</div>
+            <div className={styles.secondNewsBar}>
+              <div className={staticMode ? styles.tickerStatic : secondTickerClass}>
+                {articlesWithImages.length > 0 ? (
+                  <>
+                    <span className={styles.secondNewsItem} data-ticker="latest-articles">LATEST ARTICLES & ANALYSIS:</span>
+                    {articlesWithImages.map((post, index) => (
+                      <span
+                        key={`article-${index}`}
+                        className={styles.secondNewsItem}
+                        onMouseOver={handleSecondMouseOver}
+                        onMouseOut={handleSecondMouseOut}
+                        data-ticker={`article-${index}`}
+                      >
+                        <img
+                          src="/img/proudamericaus.png"
+                          alt="Logo"
+                          className={styles.tickerLogo}
+                          onError={() => console.error('Failed to load ticker logo')}
+                        />
+                        <SafeLink to={post.permalink} className={styles.secondNewsTitle}>
+                          {post.title}
+                        </SafeLink>
+                        <span className={styles.secondNewsDescription}>: {post.frontMatter.description}</span>
+                      </span>
+                    ))}
+                  </>
+                ) : (
+                  <span className={styles.secondNewsItem} data-ticker="no-articles">
+                    <img
+                      src="/img/proudamericaus.png"
+                      alt="Logo"
+                      className={styles.tickerLogo}
+                      onError={() => console.error('Failed to load ticker logo')}
+                    />
+                    DEBUG: NO ARTICLES AVAILABLE. CHECK /ARTICLES/TEMP/ AND BLOG-POST-LIST-PROP-DEFAULT.JSON.
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className={styles.tickerLabel}>DEEP STATE NEWS</div>
+            <div className={styles.thirdNewsBar}>
+              <div className={staticMode ? styles.tickerStatic : thirdTickerClass}>
+                <span className={styles.thirdNewsItem} data-ticker="featured-updates">FEATURED UPDATES:</span>
+                {hardcodedItems.map((item, index) => (
+                  <span
+                    key={`third-${index}`}
+                    className={styles.thirdNewsItem}
+                    onMouseOver={handleThirdMouseOver}
+                    onMouseOut={handleThirdMouseOut}
+                    data-ticker={`third-${index}`}
+                  >
+                    <img
+                      src="/img/proudamericaus.png"
+                      alt="Logo"
+                      className={styles.tickerLogo}
+                      onError={() => console.error('Failed to load ticker logo')}
+                    />
+                    <SafeLink to={item.url} className={styles.thirdNewsTitle}>
+                      {item.title}
+                    </SafeLink>
+                    <span className={styles.thirdNewsDescription}>: {item.description}</span>
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
           <table className={styles.topTrendsTable}>
             <thead>
               <tr>
@@ -441,108 +542,12 @@ export default function Home() {
               style={{ left: tooltip.x, top: tooltip.y }}
               data-position={tooltip.position}
             >
-              <button
-                className={styles.tooltipClose}
-                onClick={closeTooltip}
-              >
+              <button className={styles.tooltipClose} onClick={closeTooltip}>
                 X
               </button>
               <div dangerouslySetInnerHTML={{ __html: tooltip.content }} />
             </div>
           )}
-          <div className="container">
-            <h1 className={styles.heroTitle}>Uncovering the Truth</h1>
-            <p className="hero__subtitle">The Most Valuable Information</p>
-          </div>
-          <div className={styles.tickerContainer}>
-            <div className={styles.sponsorAlertContainer}>
-              <a href="https://www.iana.io/" target="_blank" rel="noopener noreferrer">
-                <img
-                  src="/sponsors/ianaio-logo.webp"
-                  alt="IANA Logo"
-                  className={styles.sponsorLogo}
-                />
-              </a>
-              <div>
-                <div className={styles.weeklySponsor}>Weekly Sponsor</div>
-                <div className={styles.alertBox}>
-                  ALERT! {alertContent.danger} {alertContent.region}
-                </div>
-              </div>
-            </div>
-            <div className={styles.tickerLabel}>MAGA NEWS</div>
-            <div className={styles.tickerWrapper}>
-              <div className={staticMode ? styles.tickerStatic : tickerClass}>
-                <span className={styles.tickerItem} data-ticker="today-news">TODAY NEWS:</span>
-                {newsWithImages.map((post, index) => (
-                  <span
-                    key={`news-${index}`}
-                    className={styles.tickerItem}
-                    onMouseOver={handleMouseOver}
-                    onMouseOut={handleMouseOut}
-                    data-ticker={`news-${index}`}
-                  >
-                    <img src="/img/proudamericaus.png" alt="Logo" className={styles.tickerLogo} />
-                    <SafeLink to={post.permalink} className={styles.tickerTitle}>
-                      {post.title}
-                    </SafeLink>
-                    <span className={styles.tickerDescription}>: {post.frontMatter.description}</span>
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className={styles.tickerLabel}>BETWEEN THE LINES</div>
-            <div className={styles.secondNewsBar}>
-              <div className={staticMode ? styles.tickerStatic : secondTickerClass}>
-                {articlesWithImages.length > 0 ? (
-                  <>
-                    <span className={styles.secondNewsItem} data-ticker="latest-articles">LATEST ARTICLES & ANALYSIS:</span>
-                    {articlesWithImages.map((post, index) => (
-                      <span
-                        key={`article-${index}`}
-                        className={styles.secondNewsItem}
-                        onMouseOver={handleSecondMouseOver}
-                        onMouseOut={handleSecondMouseOut}
-                        data-ticker={`article-${index}`}
-                      >
-                        <img src="/img/proudamericaus.png" alt="Logo" className={styles.tickerLogo} />
-                        <SafeLink to={post.permalink} className={styles.secondNewsTitle}>
-                          {post.title}
-                        </SafeLink>
-                        <span className={styles.secondNewsDescription}>: {post.frontMatter.description}</span>
-                      </span>
-                    ))}
-                  </>
-                ) : (
-                  <span className={styles.secondNewsItem} data-ticker="no-articles">
-                    <img src="/img/proudamericaus.png" alt="Logo" className={styles.tickerLogo} />
-                    DEBUG: NO ARTICLES AVAILABLE. CHECK /ARTICLES/TEMP/ AND BLOG-POST-LIST-PROP-DEFAULT.JSON.
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className={styles.tickerLabel}>DEEP STATE NEWS</div>
-            <div className={styles.thirdNewsBar}>
-              <div className={staticMode ? styles.tickerStatic : thirdTickerClass}>
-                <span className={styles.thirdNewsItem} data-ticker="featured-updates">FEATURED UPDATES:</span>
-                {hardcodedItems.map((item, index) => (
-                  <span
-                    key={`third-${index}`}
-                    className={styles.thirdNewsItem}
-                    onMouseOver={handleThirdMouseOver}
-                    onMouseOut={handleThirdMouseOut}
-                    data-ticker={`third-${index}`}
-                  >
-                    <img src="/img/proudamericaus.png" alt="Logo" className={styles.tickerLogo} />
-                    <SafeLink to={item.url} className={styles.thirdNewsTitle}>
-                      {item.title}
-                    </SafeLink>
-                    <span className={styles.thirdNewsDescription}>: {item.description}</span>
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
         </div>
       </header>
       <main className={styles.main}>
@@ -550,23 +555,27 @@ export default function Home() {
         <section className={styles.blogSection}>
           <div className="container">
             <h2>Latest News</h2>
-            {isHydrated && newsWithImages.length > 0 ? (
-              <div className={clsx('row', styles.blogRow)} ref={newsRowRef}>
-                {newsWithImages.map((post, index) => (
-                  <div key={`news-card-${index}`} className="col col--4">
-                    <BlogCard
-                      post={{
-                        title: post.title,
-                        permalink: post.permalink,
-                        date: post.date,
-                        frontMatter: {
-                          image: post.frontMatter.image,
-                        },
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
+            {isHydrated ? (
+              newsWithImages.length > 0 ? (
+                <div className={clsx('row', styles.blogRow)} ref={newsRowRef}>
+                  {newsWithImages.map((post, index) => (
+                    <div key={`news-card-${index}`} className="col col--4">
+                      <BlogCard
+                        post={{
+                          title: post.title,
+                          permalink: post.permalink,
+                          date: post.date,
+                          frontMatter: {
+                            image: post.frontMatter.image,
+                          },
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No news posts available.</p>
+              )
             ) : (
               <p>Loading news posts...</p>
             )}
@@ -575,23 +584,27 @@ export default function Home() {
         <section className={styles.blogSection}>
           <div className="container">
             <h2>Latest Articles & Analysis</h2>
-            {isHydrated && articlesWithImages.length > 0 ? (
-              <div className={clsx('row', styles.blogRow)} ref={articlesRowRef}>
-                {articlesWithImages.map((post, index) => (
-                  <div key={`article-card-${index}`} className="col col--4">
-                    <BlogCard
-                      post={{
-                        title: post.title,
-                        permalink: post.permalink,
-                        date: post.date,
-                        frontMatter: {
-                          image: post.frontMatter.image,
-                        },
-                      }}
-                    />
-                  </div>
-                ))}
-              </div>
+            {isHydrated ? (
+              articlesWithImages.length > 0 ? (
+                <div className={clsx('row', styles.blogRow)} ref={articlesRowRef}>
+                  {articlesWithImages.map((post, index) => (
+                    <div key={`article-card-${index}`} className="col col--4">
+                      <BlogCard
+                        post={{
+                          title: post.title,
+                          permalink: post.permalink,
+                          date: post.date,
+                          frontMatter: {
+                            image: post.frontMatter.image,
+                          },
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p>No articles available.</p>
+              )
             ) : (
               <p>Loading blog posts...</p>
             )}

@@ -4,15 +4,16 @@
 .heroBanner {
   position: relative;
   overflow: hidden;
-  padding: 2rem 0;
+  padding: 0 !important;
+  margin-top: 0 !important;
   max-width: 100vw;
-  background-color: #b31942; /* Default light theme */
-  transition: none; /* Prevent instant transitions by default */
+  background-color: #b31942 !important; /* Light theme */
+  transition: background-color 1s ease-in-out;
 }
 
-/* Dark theme default */
+/* Dark theme */
 [data-theme='dark'] .heroBanner {
-  background-color: #0a3161;
+  background-color: #0a3161 !important;
 }
 
 /* Curtain pseudo-element */
@@ -23,28 +24,28 @@
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10; /* Above video, below content */
+  z-index: 10;
   pointer-events: none;
-  background-color: #811235; /* Red for dark to light */
-  transform: translateY(100%); /* Start below viewport */
+  background-color: #811235;
+  transform: translateY(100%);
   display: none;
   opacity: 0;
 }
 
 [data-theme='dark'] .heroBanner::before {
-  background-color: #0a3161; /* Blue for light to dark */
-  transform: translateY(-100%); /* Start above viewport */
+  background-color: #0a3161;
+  transform: translateY(-100%);
 }
 
 /* Animation styles */
 .heroBanner.animateCurtain {
-  transition: background-color 1s ease-in-out; /* Sync with curtain */
+  transition: background-color 1s ease-in-out;
 }
 
 .heroBanner.animateCurtain::before {
   display: block !important;
   animation: slideUp 1s ease-in-out forwards;
-  opacity: 0.8; /* Slightly transparent for smoother blend */
+  opacity: 0.8;
 }
 
 [data-theme='dark'] .heroBanner.animateCurtain::before {
@@ -52,28 +53,15 @@
   opacity: 0.8;
 }
 
-/* Slide down animation (light to dark) */
+/* Slide animations */
 @keyframes slideDown {
-  0% {
-    transform: translateY(-100%);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 0.8;
-  }
+  0% { transform: translateY(-100%); opacity: 0.8; }
+  100% { transform: translateY(0); opacity: 0.8; }
 }
 
-/* Slide up animation (dark to light) */
 @keyframes slideUp {
-  0% {
-    transform: translateY(100%);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateY(0);
-    opacity: 0.8;
-  }
+  0% { transform: translateY(100%); opacity: 0.8; }
+  100% { transform: translateY(0); opacity: 0.8; }
 }
 
 /* Video */
@@ -98,6 +86,7 @@
   margin: 0 auto;
   position: relative;
   z-index: 20;
+  padding: 1rem 0;
 }
 
 /* Sponsor alert */
@@ -107,8 +96,7 @@
   align-items: flex-start;
   justify-content: center;
   gap: 1rem;
-  margin-top: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin: 1rem 0;
 }
 
 .sponsorLogo {
@@ -141,14 +129,14 @@
 
 /* Trends table */
 .topTrendsTable {
-  position: absolute;
-  top: 1rem;
-  left: calc(50% + 200px);
+  width: 100%;
+  max-width: 90%;
+  margin: 0 auto 1rem; /* Reduced bottom margin to move table up on desktop */
   border: none !important;
   border-collapse: collapse !important;
   color: beige !important;
   font-family: 'Instrument Sans', sans-serif !important;
-  font-size: 0.8rem !important;
+  font-size: 1rem !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
   z-index: 30;
   text-align: left;
@@ -157,13 +145,13 @@
 .topTrendsTable th,
 .topTrendsTable td {
   border: none !important;
-  padding: 0.2rem 0.4rem;
+  padding: 0.5rem 1rem;
   color: beige !important;
 }
 
 .topTrendsTable th {
   font-weight: bold;
-  font-size: 0.7rem !important;
+  font-size: 1rem !important;
 }
 
 .topTrendsTable td {
@@ -173,14 +161,14 @@
 .verticalLabel {
   writing-mode: vertical-rl;
   text-orientation: mixed;
-  font-size: 0.7rem !important;
-  padding-right: 0.2rem;
+  font-size: 1rem !important;
+  padding-right: 0.5rem;
   color: beige !important;
 }
 
 .lastWeekCell {
   border-right: 1px solid rgba(245, 245, 220, 0.5) !important;
-  padding-right: 0.4rem;
+  padding-right: 1rem;
 }
 
 .cellText {
@@ -271,10 +259,11 @@
   color: #7ea0cb !important;
   font-size: 3.5rem !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  font-family: 'Instrument Serif', serif;
+  font-family: 'Instrument Serif', serif !important;
   word-spacing: 0.06em;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  margin: 0.5rem 0;
 }
 
 .hero__subtitle {
@@ -284,6 +273,7 @@
   letter-spacing: 0.02em !important;
   word-spacing: 0.05em !important;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  margin: 0.5rem 0;
 }
 
 [data-theme='dark'] .heroTitle {
@@ -297,33 +287,43 @@
 /* Ticker styles */
 .tickerContainer {
   width: 100%;
-  margin-top: 2rem;
+  margin: 1rem 0;
 }
 
 .tickerLabel {
-  font-size: 1.2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   color: #c6c6c6;
   text-align: left;
   margin-bottom: 0.5rem;
-  font-family: 'Instrument Serif', serif;
+  font-family: 'Instrument Serif', serif !important;
   text-transform: uppercase;
   z-index: 30;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-.tickerWrapper {
-  width: 100%;
+.tickerWrapper,
+.secondNewsBar,
+.thirdNewsBar {
+  width: 90%;
+  max-width: 90%;
+  margin: 0.5rem auto;
   overflow: hidden;
-  background: #d9534f4d !important;
+  background: #b31942 !important; /* Light mode */
   backdrop-filter: blur(5px);
   border: 1px solid rgba(255, 255, 255, 0.3);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  height: 2.5rem !important;
+  height: 3rem !important;
   position: relative;
   z-index: 25;
   display: flex;
   align-items: center;
+}
+
+[data-theme='dark'] .tickerWrapper,
+[data-theme='dark'] .secondNewsBar,
+[data-theme='dark'] .thirdNewsBar {
+  background: #0a3161a8 !important; /* Dark mode */
 }
 
 .ticker {
@@ -344,16 +344,17 @@
   align-items: center;
   margin-right: 2rem;
   color: #ffffff !important;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  font-weight: bold;
   text-transform: uppercase;
   height: 100%;
-  padding: 0.2rem 0;
+  padding: 0.5rem 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .tickerLogo {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   margin-right: 0.5rem;
   vertical-align: middle;
 }
@@ -364,7 +365,7 @@
   font-weight: bold;
   text-transform: uppercase;
   margin-right: 0.5rem;
-  font-size: 1rem;
+  font-size: 1.2rem;
 }
 
 .tickerTitle:hover {
@@ -374,31 +375,12 @@
 .tickerDescription {
   color: #ffffff !important;
   font-weight: normal;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
 }
 
 @keyframes ticker {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-.secondNewsBar {
-  width: 100%;
-  overflow: hidden;
-  background: #d9534f33 !important;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  height: 2.5rem !important;
-  position: relative;
-  margin-top: 0.5rem !important;
-  z-index: 25;
-  display: flex;
-  align-items: center;
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 .secondNewsTicker {
@@ -419,10 +401,11 @@
   align-items: center;
   margin-right: 2rem;
   color: #ffffff !important;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
+  font-weight: bold;
   text-transform: uppercase;
   height: 100%;
-  padding: 0.2rem 0;
+  padding: 0.5rem 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -432,7 +415,7 @@
   font-weight: bold;
   text-transform: uppercase;
   margin-right: 0.5rem;
-  font-size: 0.9rem;
+  font-size: 1.1rem;
 }
 
 .secondNewsTitle:hover {
@@ -442,31 +425,12 @@
 .secondNewsDescription {
   color: #ffffff !important;
   font-weight: normal;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 @keyframes secondTicker {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-
-.thirdNewsBar {
-  width: 100%;
-  overflow: hidden;
-  background: #0a3161a8 !important;
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  height: 2.5rem !important;
-  position: relative;
-  margin-top: 0.5rem !important;
-  z-index: 25;
-  display: flex;
-  align-items: center;
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 .thirdNewsTicker {
@@ -487,10 +451,11 @@
   align-items: center;
   margin-right: 2rem;
   color: #ffd700 !important;
-  font-size: 0.8rem;
+  font-size: 1rem;
+  font-weight: bold;
   text-transform: uppercase;
   height: 100%;
-  padding: 0.2rem 0;
+  padding: 0.5rem 0;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
@@ -500,7 +465,7 @@
   font-weight: bold;
   text-transform: uppercase;
   margin-right: 0.5rem;
-  font-size: 0.8rem;
+  font-size: 1rem;
 }
 
 .thirdNewsTitle:hover {
@@ -510,21 +475,22 @@
 .thirdNewsDescription {
   color: #ffd700 !important;
   font-weight: normal;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 }
 
 @keyframes thirdTicker {
-  0% {
-    transform: translate3d(0, 0, 0);
-  }
-  100% {
-    transform: translate3d(-50%, 0, 0);
-  }
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
 }
 
 /* Main section */
 .main {
   padding: 2rem;
+  background-color: #f3e3b4 !important; /* Light theme */
+}
+
+[data-theme='dark'] .main {
+  background-color: #0a3161 !important; /* Dark theme */
 }
 
 .blogSection {
@@ -535,34 +501,116 @@
   display: flex;
   flex-wrap: nowrap;
   gap: 1rem;
-  overflow-x: auto; /* Enable touchpad scrolling */
+  overflow-x: auto;
   scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch; /* Smooth scrolling */
+  -webkit-overflow-scrolling: touch;
   position: relative;
-  max-width: 100%; /* Fit container */
-  padding-bottom: 1rem; /* Space for scrollbar */
-  scroll-snap-type: x mandatory; /* Snap to card groups */
+  max-width: 100%;
+  padding-bottom: 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-appearance: none; /* Ensure consistent rendering on iOS */
+  scrollbar-width: auto !important; /* Ensure scrollbar is visible */
 }
 
 /* Ensure 3 cards visible on desktop */
 .blogRow > .col {
-  flex: 0 0 33.333%; /* ~33% for 3 cards */
+  flex: 0 0 33.333%;
   max-width: 33.333%;
-  scroll-snap-align: start; /* Snap to each card */
+  scroll-snap-align: start;
 }
 
 /* Scrollbar styling */
 .blogRow::-webkit-scrollbar {
   height: 8px;
+  -webkit-appearance: none; /* Override iOS defaults */
+  display: block !important; /* Ensure visibility at start */
 }
 
-.blogRow::-webkit-scrollbar-thumb {
-  background: #b31942;
+.blogRow::-webkit-scrollbar-track {
+  background: transparent !important; /* Clear track */
   border-radius: 4px;
 }
 
+.blogRow::-webkit-scrollbar-thumb {
+  background: #b31942 !important; /* Light mode, enforced */
+  border-radius: 4px;
+  border: none !important; /* Remove any border that might hide it */
+  opacity: 1 !important; /* Ensure full visibility */
+}
+
 [data-theme='dark'] .blogRow::-webkit-scrollbar-thumb {
-  background: #b2b2b2; /* Dark mode scrollbar */
+  background: #b2b2b2 !important; /* Dark mode */
+}
+
+/* Fallback for browsers supporting scrollbar-color */
+@supports (scrollbar-color: red blue) {
+  .blogRow {
+    scrollbar-color: #b31942 transparent !important; /* Light mode */
+    scrollbar-width: auto !important; /* Ensure visibility */
+  }
+  [data-theme='dark'] .blogRow {
+    scrollbar-color: #b2b2b2 transparent !important; /* Dark mode */
+  }
+}
+
+/* Ensure scrollbar visibility on mobile */
+@media screen and (max-width: 966px) {
+  .blogRow::-webkit-scrollbar {
+    height: 8px;
+    -webkit-appearance: none;
+    display: block !important;
+  }
+
+  .blogRow::-webkit-scrollbar-thumb {
+    background: #b31942 !important;
+    border-radius: 4px;
+    opacity: 1 !important;
+  }
+
+  [data-theme='dark'] .blogRow::-webkit-scrollbar-thumb {
+    background: #b2b2b2 !important;
+  }
+
+  .blogRow {
+    scrollbar-width: auto !important;
+  }
+}
+
+/* Next Posts button */
+.nextButton {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.4rem 0.2rem;
+  background-color: #b31942;
+  color: beige !important;
+  border: none;
+  border-radius: 4px;
+  font-family: 'Instrument Sans', sans-serif;
+  font-size: 0.7rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+  width: 1.5rem;
+  height: 6rem;
+}
+
+.nextButton:hover {
+  background-color: #811235;
+}
+
+[data-theme='dark'] .nextButton {
+  background-color: #0a3161;
+}
+
+[data-theme='dark'] .nextButton:hover {
+  background-color: #05203f;
 }
 
 /* Clock wrapper */
@@ -589,17 +637,84 @@
   width: 100%;
 }
 
+/* Mobile-specific ticker styles */
+@media screen and (max-width: 966px) {
+  .tickerWrapper,
+  .secondNewsBar,
+  .thirdNewsBar {
+    width: 95% !important;
+    max-width: 95% !important;
+    height: 2.5rem !important;
+    margin: 0.3rem auto;
+  }
+
+  .tickerItem {
+    font-size: 0.9rem;
+    font-weight: normal;
+    padding: 0.3rem 0;
+  }
+
+  .tickerTitle {
+    font-size: 0.9rem;
+    font-weight: normal;
+  }
+
+  .tickerDescription {
+    font-size: 0.8rem;
+  }
+
+  .secondNewsItem {
+    font-size: 0.8rem;
+    font-weight: normal;
+    padding: 0.3rem 0;
+  }
+
+  .secondNewsTitle {
+    font-size: 0.8rem;
+    font-weight: normal;
+  }
+
+  .secondNewsDescription {
+    font-size: 0.7rem;
+  }
+
+  .thirdNewsItem {
+    font-size: 0.7rem;
+    font-weight: normal;
+    padding: 0.3rem 0;
+  }
+
+  .thirdNewsTitle {
+    font-size: 0.7rem;
+    font-weight: normal;
+  }
+
+  .thirdNewsDescription {
+    font-size: 0.6rem;
+  }
+
+  .tickerLogo {
+    width: 12px;
+    height: 12px;
+  }
+}
+
 /* Mobile adjustments */
 @media screen and (max-width: 966px) {
   .heroBanner {
-    padding: 1rem 0 !important;
+    padding: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  .heroContainer {
+    padding: 0.5rem 0;
   }
 
   .sponsorAlertContainer {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1rem;
+    margin: 0.5rem 0;
   }
 
   .sponsorLogo {
@@ -618,40 +733,46 @@
   }
 
   .heroTitle {
-    font-size: 2.5rem !important;
+    font-size: 2rem !important;
+    margin: 0.3rem 0;
   }
 
   .hero__subtitle {
-    font-size: 1.4rem !important;
+    font-size: 1.2rem !important;
+    margin: 0.3rem 0;
   }
 
   .topTrendsTable {
-    top: 0.5rem;
-    left: calc(50% + 100px);
-    font-size: 0.6rem !important;
+    width: 95%;
+    max-width: 95%;
+    margin: 0.5rem auto;
+    font-size: 0.8rem !important;
   }
 
   .topTrendsTable th {
-    font-size: 0.5rem !important;
-  }
-
-  .verticalLabel {
-    font-size: 0.5rem !important;
-    padding-right: 0.1rem;
+    font-size: 0.7rem !important;
   }
 
   .topTrendsTable td,
   .topTrendsTable th {
-    padding: 0.1rem 0.3rem;
+    padding: 0.2rem 0.5rem;
+  }
+
+  .verticalLabel {
+    font-size: 0.7rem !important;
+    padding-right: 0.2rem;
   }
 
   .lastWeekCell {
-    padding-right: 0.3rem;
-    border-right: 1px solid rgba(245, 245, 220, 0.5) !important;
+    padding-right: 0.5rem;
   }
 
   .tickerContainer {
-    margin-top: 1.5rem;
+    margin: 0.5rem 0;
+  }
+
+  .tickerLabel {
+    font-size: 1.2rem;
   }
 
   .tooltip {
@@ -670,73 +791,33 @@
     font-size: 0.6rem !important;
   }
 
-  .tickerLabel {
-    font-size: 1rem;
-  }
-
-  .tickerWrapper,
-  .secondNewsBar,
-  .thirdNewsBar {
-    height: 3.5rem !important;
-  }
-
-  .tickerItem {
-    font-size: 0.9rem;
-    padding: 0.4rem 0;
-  }
-
-  .tickerTitle {
-    font-size: 0.9rem;
-  }
-
-  .tickerDescription {
-    font-size: 0.8rem;
-  }
-
-  .secondNewsItem {
-    font-size: 0.8rem;
-    padding: 0.4rem 0;
-  }
-
-  .secondNewsTitle {
-    font-size: 0.8rem;
-  }
-
-  .secondNewsDescription {
-    font-size: 0.7rem;
-  }
-
-  .thirdNewsItem {
-    font-size: 0.7rem;
-    padding: 0.4rem 0;
-  }
-
-  .thirdNewsTitle {
-    font-size: 0.7rem;
-  }
-
-  .thirdNewsDescription {
-    font-size: 0.6rem;
-  }
-
-  .tickerLogo {
-    width: 12px;
-    height: 12px;
-  }
-
-  /* Blog row mobile scrolling */
   .blogRow {
     flex-wrap: nowrap;
     overflow-x: auto;
     scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-    padding-bottom: 1rem; /* Space for scrollbar */
-    scroll-snap-type: x mandatory; /* Snap to cards */
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 1rem;
+    scroll-snap-type: x mandatory;
   }
 
   .blogRow > .col {
-    flex: 0 0 80%; /* Each card takes ~80% of viewport width */
-    max-width: 80%;
-    scroll-snap-align: start; /* Snap to each card */
+    flex: 0 0 95%;
+    max-width: 95%;
+    scroll-snap-align: start;
+  }
+
+  .nextButton {
+    font-size: 0.6rem;
+    padding: 0.3rem 0.15rem;
+    width: 1.2rem;
+    height: 5rem;
+  }
+
+  .nextButton::before {
+    content: 'Scroll Right';
+  }
+
+  .main {
+    padding: 1rem;
   }
 }

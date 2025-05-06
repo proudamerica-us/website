@@ -15,7 +15,7 @@
   --ifm-code-font-size: 95%;
   --ifm-font-family-base: 'Instrument Sans', sans-serif;
   --ifm-heading-font-family: 'Instrument Serif', serif;
-  --ifm-font-size-base: 18px;
+  --ifm-font-size-base: 18px; /* Restored from original */
   --ifm-heading-font-size-multiplier: 1.2;
   --ifm-word-spacing: 0.05em;
   --ifm-letter-spacing: 0.02em;
@@ -62,7 +62,9 @@
 
 /* Hero section background */
 .hero--primary {
-  background-color: var(--ifm-hero-background-color);
+  background-color: var(--ifm-hero-background-color) !important;
+  padding: 0 !important;
+  margin-top: 0 !important;
 }
 
 html[data-theme='dark'] .hero--primary {
@@ -106,35 +108,35 @@ html[data-theme='dark'] .hero mark {
   position: sticky;
   top: 0;
   z-index: var(--ifm-z-index-fixed);
-  background-color: #0A3161;
+  background-color: #0A3161 !important; /* Restored from original */
 }
 
 .announcementBarContent_xLdY, .navbar__title {
   flex: 1 1 auto;
-  color: #dae9fd;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 1.7rem;
+  color: #dae9fd !important; /* Restored from original */
+  font-family: 'Instrument Serif', serif !important; /* Restored from original */
+  font-size: 1.7rem !important; /* Restored from original */
   word-spacing: 0.05em;
   letter-spacing: 0.02em;
 }
 
 .navbar__brand, .navbar__link {
-  color: #7ea0ca;
-  font-family: 'Instrument Sans', sans-serif;
-  font-size: 1.4rem;
+  color: #7ea0ca !important; /* Restored from original */
+  font-family: 'Instrument Sans', sans-serif !important; /* Restored from original */
+  font-size: 1.4rem !important; /* Restored from original */
   word-spacing: 0.05em;
   letter-spacing: 0.02em;
 }
 
 /* Navbar hover and active styles */
 .navbar__link--active, .navbar__link:hover {
-  color: #dae9fd;
+  color: #dae9fd !important; /* Restored from original */
   text-decoration: none;
 }
 
 html[data-theme='dark'] .navbar__link--active,
 html[data-theme='dark'] .navbar__link:hover {
-  color: #dbeafd;
+  color: #dbeafd !important; /* Restored from original */
   text-decoration: none;
 }
 
@@ -152,11 +154,11 @@ html[data-theme='dark'] .navbar__link:hover {
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
-  background-color: #f3e3b4; /* Light theme background */
+  background-color: #f3e3b4 !important; /* Light theme background */
 }
 
 html[data-theme='dark'] .mainWrapper_z2l0 {
-  background-color: #0a3161; /* Dark theme background */
+  background-color: #0a3161 !important; /* Dark theme background */
 }
 
 /* Footer */
@@ -189,21 +191,21 @@ html[data-theme='dark'] a:not(.navbar__link):hover {
 
 /* Card styles */
 .card {
-  background-color: #f2e2b3;
+  background-color: #f2e2b3 !important;
 }
 
 .card__header,
 .card__image {
-  background-color: #f5f5dc;
+  background-color: #f5f5dc !important;
 }
 
 html[data-theme='dark'] .card {
-  background-color: #f2e2b3;
+  background-color: #f2e2b3 !important;
 }
 
 html[data-theme='dark'] .card__header,
 html[data-theme='dark'] .card__image {
-  background-color: #f2e2b3;
+  background-color: #f2e2b3 !important;
 }
 
 /* Navbar logo and title */
@@ -222,8 +224,8 @@ html[data-theme='dark'] .card__image {
 
 .navbar__title {
   margin-left: 10px;
-  font-size: 1.7rem;
-  font-family: 'Instrument Serif';
+  font-size: 1.7rem !important; /* Restored from original */
+  font-family: 'Instrument Serif', serif !important; /* Restored from original */
 }
 
 .navbar__items {
@@ -233,7 +235,8 @@ html[data-theme='dark'] .card__image {
 
 .navbar__link {
   margin-left: 20px;
-  font-size: 1.0rem;
+  font-size: 1.4rem !important; /* Restored from original */
+  font-family: 'Instrument Sans', sans-serif !important; /* Restored from original */
 }
 
 /* Markdown styles */
@@ -265,7 +268,7 @@ html[data-theme='dark'] .card__image {
 .markdown a,
 .markdown span {
   font-family: 'Instrument Sans', sans-serif;
-  font-size: 18px;
+  font-size: 18px; /* Restored from original */
   word-spacing: 0.05em;
   letter-spacing: 0.02em;
   color: #6e4108;
@@ -302,5 +305,10 @@ html[data-theme='dark'] .news-content .markdown {
 
   .navbar__title {
     color: #0a3161 !important;
+  }
+
+  .hero--primary {
+    padding: 0 !important;
+    margin-top: 0 !important;
   }
 }
